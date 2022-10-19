@@ -1,0 +1,42 @@
+form {
+  background-color: #025928cc;
+  border-radius: 2rem;
+  padding: 2rem;
+  box-shadow: 24px 18px 9px 5px rgba(0, 0, 0, 0.3);
+  height: 15rem;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+
+input {
+  padding: 11px 20px;
+  width: 100%;
+  line-height: 1rem;
+  margin: 20px 0;
+}
+input#url {
+  width: 100%;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: transparent;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  resize: none;
+  word-break: break-word;
+}
+input#button {
+  border: none;
+  border-radius: 2rem;
+  width: 20%;
+  align-items: baseline;
+  text-align: center;
+  background-color: var(--primary-color-white);
+  color: #d90416;
+  padding: 0.6rem;
+}
+label {
+  color: var(--primary-color-white);
+  font-size: large;
+  letter-spacing: 0.2rem;
+  padding: 1rem 1rem 1rem 0rem;
+}
