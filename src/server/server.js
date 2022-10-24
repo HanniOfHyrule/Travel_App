@@ -1,59 +1,35 @@
-var path = require("path");
-const fetch = require("node-fetch");
+// Require Express to run server and routes
 const express = require("express");
-var bodyParser = require("body-parser");
-var cors = require("cors");
-
-//My personal API KEY stored in an enviroment variable
-const dotenv = require("dotenv");
-dotenv.config();
-const apiKey = process.env.API_LICENSE_KEY;
-
 const app = express();
-app.use(express.static("dist"));
-app.use(cors());
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const fetch = require("node-fetch");
+
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-);
 
-console.log(__dirname);
+// Cors for cross origin allowance
+app.use(cors());
 
-app.post("/sentiment", async function (req, res) {
-  const sentimentResponse = await analyseSentiment(req.body.text);
-  res.json(sentimentResponse);
-});
-
-app.get("/", function (req, res) {
-  res.sendFile("dist/index.html");
-});
+// Initialize the main project folder
+app.use(express.static("./dist"));
 
 // designates what port the app will listen to for incoming requests
 app.listen(8080, function () {
   console.log("Example app listening on port 8080!");
 });
 
-async function analyseSentiment(url) {
-  try {
-    const responseURL = await fetch(url);
-    const bodyURL = await responseURL.text();
+// Array that hold the Trips
+const trips = [];
 
-    const formdata = new URLSearchParams();
-    formdata.append("key", `${apiKey}`);
-    formdata.append("txt", bodyURL);
-    formdata.append("lang", "auto");
+//Routes
 
-    const response = await fetch("https://api.meaningcloud.com/sentiment-2.1", {
-      method: "POST",
-      body: formdata,
-      redirect: "follow",
-    });
-    const body = await response.json();
+app.get("/", (req, res) => {
+  res.status(200).send("./dist/index.html");
+});
 
-    return body;
-  } catch (error) {
-    console.error(error);
-  }
-}
+app.post("/send", (req, res) => {
+  const trip = req.body.trip;
+  trips.push(trip);
+  res.send(trips);
+});

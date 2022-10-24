@@ -26,6 +26,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebPackPlugin({
+      minify: "false",
       template: "./src/client/views/index.html",
       filename: "./index.html",
     }),

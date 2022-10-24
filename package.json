@@ -18,6 +18,7 @@
     "express": "^4.17.1",
     "node-fetch": "^2.6.7",
     "regenerator-runtime": "^0.13.10",
+    "util": "^0.12.5",
     "webpack": "^5.74.0",
     "workbox-webpack-plugin": "^6.5.4"
   },

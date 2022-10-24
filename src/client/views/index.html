@@ -18,24 +18,23 @@
 
   <body>
     <header>
-      <div class=""><h1>Travel planner</h1></div>
+      <div class="header"><h1>Travel planner</h1></div>
     </header>
 
     <main>
-     
       <section>
         <form class="travel_input onsubmit="return Client.runSentimentAnalysis(event)">
           <input id="city" type="text" name="city" placeholder="City" required />
           <input
             id="arrival-date"
-            type="arrival-date"
+            type="date"
             name="arrival-date"
             placeholder="arrival-date"
             required
           />
           <input
             id="departure_date"
-            type="departure_date"
+            type="date"
             name="departure_date"
             placeholder="departure_date"
             required
@@ -44,11 +43,14 @@
             type="submit"
             id="button"
             value="submit"
-            onclick="return Client.runSentimentAnalysis(event)"
-            onsubmit="return Client.runSentimentAnalysis(event)"
+            onclick="return Client.runTravelInfo(event)"
+            onsubmit="return Client.runTravelInfo(event)"
           />
         </form>
+        <div id="allRecentPosts"></div>
       </section>
+    
+      
       <footer>
         <p class="footer">
           Made by <a href="github.com/HanniOfHyrule">Hanni Liebler</a> with
@@ -56,14 +58,13 @@
         </p>
       </footer>
     </main>
-
+<script>
       // Check that service workers are supported
       // if ("serviceWorker" in navigator) {
       //   //   Use the window load event to keep the page load performant
       //   window.addEventListener("load", () => {
       //     navigator.serviceWorker.register("/service-worker.js");
       //   });
-
       // }
     </script>
   </body>

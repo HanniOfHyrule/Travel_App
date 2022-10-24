@@ -6,15 +6,15 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-image: url("../media/images/tom-barrett-M0AWNxnLaMw-unsplash.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 main {
   flex: 2;
   color: var(--primary-color-white);
-  background-image: url(../images/pietro-jeng-n6B49lTx7NM-unsplash.jpg);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
 }
 img {
   opacity: 0.4;
@@ -44,6 +44,7 @@ section {
     height: 0;
     margin: 8px;
     box-sizing: border-box;
+
     border: 32px solid #fff;
     border-color: #fff transparent #fff transparent;
     animation: lds-hourglass 1.2s infinite;

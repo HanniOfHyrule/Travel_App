@@ -1,7 +1,7 @@
 import { JSDOM } from "jsdom";
 import runtime from "regenerator-runtime";
-import { handleSubmit, postContent } from "../client/js/formHandler";
-import { updateUiWithSentiment } from "../client/js/formHandler";
+import { handleSubmit, postContent } from "../client/js/app";
+import { updateUiWithSentiment } from "../client/js/app";
 
 /**
  * @jest-environment jsdom
