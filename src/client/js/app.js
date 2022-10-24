@@ -8,20 +8,22 @@ function runTravelInfo(event) {
   event.preventDefault();
 
   handleSearch(document)
-    .then((location) => postContent(location))
+    // .then((location) => postContent(location))
     .then((document) => updateUI(location, document))
     .catch((reason) => alert(reason));
   return false;
 }
 
-function getCity(document) {
-  const location = document.getElementById("city").value;
-  console.log(location);
-  return location;
+function getCity() {
+  if (document.getElementById("city").value != null) {
+    const location = document.getElementById("city").value;
+
+    return location;
+  }
 }
 
 const handleSearch = async (document) => {
-  trip.city = getCity(document);
+  trip.city = getCity(location);
 
   const getLocation = await geoNameLocation(trip.city);
 
@@ -29,44 +31,26 @@ const handleSearch = async (document) => {
   trip.longitude = getLocation.longitude;
   trip.countryCode = getLocation.countryCode;
 
-  console.log(trip);
-
   updateUI(trip);
 };
 
-async function postContent(location) {
-  return new Promise((resolve, reject) => {
-    if (getCity(location)) {
-      fetch("http://localhost:8080/save", {
-        method: "POST",
-        body: JSON.stringify({ trip: trip }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then(async function (res) {
-        resolve(await res.json());
-      });
-    } else {
-      reject("Please enter a vaild City!");
-    }
-  });
-}
-
-function updateUI(location, document) {
+function updateUI(location) {
   const allRecentPosts = document.getElementById("allRecentPosts");
   allRecentPosts.innerHTML = "";
 
-  location.forEach(function (element) {
+  function createElements(location) {
     const newDiv = document.createElement("div");
     newDiv.classList.add("entryHolder");
 
     newDiv.innerHTML = `
-      <div class="arrivalDate"><u>arrival Date:</u> ${element.arrivalDate}</div>
-      <div class="departureDate"><u>departure Date:</u> ${element.departureDate}</div>
-      <div class="city">My City: ${element.city}</div>`;
+    <div class="city">My City: ${location.city}, ${location.countryCode}</div>
+    
+
+      `;
 
     allRecentPosts.appendChild(newDiv);
-  });
+  }
+  return createElements(location);
 }
 
 // const handleSave = async (e) => {
@@ -103,4 +87,4 @@ function updateUI(location, document) {
 
 document.getElementById("button").addEventListener("click", handleSearch);
 
-export { runTravelInfo, updateUI, postContent, getCity, handleSearch };
+export { runTravelInfo, updateUI, getCity, handleSearch };
