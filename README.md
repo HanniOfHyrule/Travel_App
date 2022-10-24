@@ -1,8 +1,9 @@
-# Travel App
+# Evaluate A News Article with Natural Language Processing
 
-This is the 5th project and the Capstone from the [Udacity](Udacity.com) Web Developer Nanodegree program.
+This is the 4th project from the [Udacity](Udacity.com) Web Developer Nanodegree program.
 
-This project allows to enter his travel information and get information about the wather. Also it can save the information for later.
+This project allows to analyze the user's article using NLP.
+the user enters the URL of any blog or newsletter article and gets a response from the meaningcloud API API with the analyzed values.
 
 ## Build tools
 
@@ -48,7 +49,7 @@ Choose the installation for your development mode
 `npm i -D mini-css-extract-plugin`
 `npm i -D optimize-css-assets-webpack-plugin terser-webpack-plugin`
 
-Go to the [geonames](https://www.geonames.org/),[ Weatherbit](https://www.weatherbit.io/account/create),[ Pixabay](https://pixabay.com/api/docs/) and get your personal API Key.
+Go to the [meaningcloudAPI](meaningcloud.com) and get your personal API Key.
 
 Configurate your environment files and using dotenv
 
@@ -70,3 +71,5 @@ after that you can start it
 Open your browser at http://localhost:8080
 
 ## And this is what it looks like:
+
+![The page](./src/client/assets/images/Article_analysis_with_NLP.png)
