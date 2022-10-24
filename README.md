@@ -70,5 +70,3 @@ after that you can start it
 Open your browser at http://localhost:8080
 
 ## And this is what it looks like:
-
-![The page](./src/client/assets/images/Article_analysis_with_NLP.png)
