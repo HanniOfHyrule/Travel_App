@@ -14,7 +14,7 @@ function runTravelInfo(event) {
 
   handleSearch(document)
     // .then((location) => postContent(location))
-    .then((location) => updateUI(trip, location, image))
+    .then((location) => updateUI(trip, location))
     .catch((reason) => alert(reason));
   return false;
 }
@@ -42,11 +42,9 @@ const handleSearch = async (document) => {
   trip.weatherForecast = await getWeatherbitForecast(
     getLocation.latitude,
     getLocation.longitude
-  );
+  )
 
-  trip.image = await getPixabayImage(trip.city);
-
-  console.log(trip);
+  trip.images = await getPixabayImage(trip.city)
 
   updateUI(trip, location);
 };
@@ -67,8 +65,8 @@ function updateUI(trip) {
       trip.start,
       trip.end
     )} days until the start of your trip!</div>
-    <div class="weather">Forecast Weather: ${trip.data}, ${trip.data}</div>
-    <div class="image"> ${trip.city.previewURL}</div>`;
+    <div class="weather">Forecast Weather: ${trip.weatherForecast.data[0].app_max_temp}, ${trip.weatherForecast.data[0].clouds}}</div>
+    <div class="image" src="${trip.images.webformatURL}">Image of your Destination: </div>`;
 
     allRecentPosts.appendChild(newDiv);
   }
