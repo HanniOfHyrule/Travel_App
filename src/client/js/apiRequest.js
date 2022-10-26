@@ -5,8 +5,6 @@ const geonamesQuery = "searchJSON?formatted=true&q=";
 const weatherbitURL = "http://api.weatherbit.io/v2.0/forecast/daily";
 const weatherbitKey = process.env.API_WEATHER_KEY;
 
-
-
 async function getWeatherbitForecast(latitude, longitude) {
   const endpoint =
     weatherbitURL +
@@ -42,13 +40,12 @@ async function geoNameLocation(location) {
   try {
     const response = await fetch(endpoint);
     if (response.ok) {
-      const location = {};
       const jsonResponse = await response.json();
-
-      location.latitude = jsonResponse.geonames[0].lat;
-      location.longitude = jsonResponse.geonames[0].lng;
-      location.countryCode = jsonResponse.geonames[0].countryCode;
-      return location;
+      return {
+        latitude: jsonResponse.geonames[0].lat,
+        longitude: jsonResponse.geonames[0].lng,
+        countryCode: jsonResponse.geonames[0].countryCode,
+      };
     }
   } catch (error) {
     console.log(error);

@@ -27,7 +27,7 @@ function getCity() {
     console.error("There is something wrong with the City input.");
   }
 }
-
+//TODO:Fehlerbehandlung Try/catch?
 const handleSearch = async (document) => {
   trip.city = getCity(trip);
   trip.start = getTripStart();
@@ -42,9 +42,9 @@ const handleSearch = async (document) => {
   trip.weatherForecast = await getWeatherbitForecast(
     getLocation.latitude,
     getLocation.longitude
-  )
+  );
 
-  trip.images = await getPixabayImage(trip.city)
+  trip.imageURL = await getPixabayImage(trip.city);
 
   updateUI(trip, location);
 };
@@ -56,17 +56,24 @@ function updateUI(trip) {
   function createElements(trip) {
     const newDiv = document.createElement("div");
     newDiv.classList.add("entryHolder");
-
     newDiv.innerHTML = `
-    <div class="city">My City: ${trip.city}, ${trip.countryCode}</div>
-    <div class="arrivalDate"> Arrival Date: ${getTripStart(trip.start)}</div>
-    <div class="departureDate"> Departure Date: ${getTripEnd(trip.end)}</div>
-    <div class="counter"> ${dayCounter(
+    <img class="image" src="${
+      trip.imageURL
+    }" alt="Image of your Destination:" />
+    <p class="city">My City: ${trip.city}, ${trip.countryCode}</p>
+    <p class="arrivalDate"> Arrival Date: ${getTripStart(trip.start)}</p>
+    <p class="departureDate"> Departure Date: ${getTripEnd(trip.end)}</p>
+    <p class="counter"> ${dayCounter(
       trip.start,
       trip.end
-    )} days until the start of your trip!</div>
-    <div class="weather">Forecast Weather: ${trip.weatherForecast.data[0].app_max_temp}, ${trip.weatherForecast.data[0].clouds}}</div>
-    <div class="image" src="${trip.images.webformatURL}">Image of your Destination: </div>`;
+    )} days until the start of your trip!</p>
+    <p class="weather">Forecast Weather: ${
+      trip.weatherForecast.data[0].app_max_temp
+    }</p>
+    <p> Average total cloud coverage:  ${
+      trip.weatherForecast.data[0].clouds
+    } % </p>
+    `;
 
     allRecentPosts.appendChild(newDiv);
   }
