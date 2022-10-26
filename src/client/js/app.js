@@ -1,4 +1,9 @@
-import { geoNameLocation } from "./apiRequest";
+import {
+  geoNameLocation,
+  getWeatherbitForecast,
+  getPixabayImage,
+} from "./apiRequest";
+import { getTripStart, getTripEnd, dayCounter } from "./dateHandler";
 
 //TODO: use here .addEventlistener() our event listeners can’t go there. Where can we put them? To call that exported function?
 
@@ -9,21 +14,24 @@ function runTravelInfo(event) {
 
   handleSearch(document)
     // .then((location) => postContent(location))
-    .then((document) => updateUI(location, document))
+    .then((location) => updateUI(trip, location, image))
     .catch((reason) => alert(reason));
   return false;
 }
 
 function getCity() {
   if (document.getElementById("city").value != null) {
-    const location = document.getElementById("city").value;
-
-    return location;
+    const trip = document.getElementById("city").value;
+    return trip;
+  } else {
+    console.error("There is something wrong with the City input.");
   }
 }
 
 const handleSearch = async (document) => {
-  trip.city = getCity(location);
+  trip.city = getCity(trip);
+  trip.start = getTripStart();
+  trip.end = getTripEnd();
 
   const getLocation = await geoNameLocation(trip.city);
 
@@ -31,26 +39,40 @@ const handleSearch = async (document) => {
   trip.longitude = getLocation.longitude;
   trip.countryCode = getLocation.countryCode;
 
-  updateUI(trip);
+  trip.weatherForecast = await getWeatherbitForecast(
+    getLocation.latitude,
+    getLocation.longitude
+  );
+
+  trip.image = await getPixabayImage(trip.city);
+
+  console.log(trip);
+
+  updateUI(trip, location);
 };
 
-function updateUI(location) {
+function updateUI(trip) {
   const allRecentPosts = document.getElementById("allRecentPosts");
   allRecentPosts.innerHTML = "";
 
-  function createElements(location) {
+  function createElements(trip) {
     const newDiv = document.createElement("div");
     newDiv.classList.add("entryHolder");
 
     newDiv.innerHTML = `
-    <div class="city">My City: ${location.city}, ${location.countryCode}</div>
-    
-
-      `;
+    <div class="city">My City: ${trip.city}, ${trip.countryCode}</div>
+    <div class="arrivalDate"> Arrival Date: ${getTripStart(trip.start)}</div>
+    <div class="departureDate"> Departure Date: ${getTripEnd(trip.end)}</div>
+    <div class="counter"> ${dayCounter(
+      trip.start,
+      trip.end
+    )} days until the start of your trip!</div>
+    <div class="weather">Forecast Weather: ${trip.data}, ${trip.data}</div>
+    <div class="image"> ${trip.city.previewURL}</div>`;
 
     allRecentPosts.appendChild(newDiv);
   }
-  return createElements(location);
+  return createElements(trip, location);
 }
 
 // const handleSave = async (e) => {
@@ -87,4 +109,4 @@ function updateUI(location) {
 
 document.getElementById("button").addEventListener("click", handleSearch);
 
-export { runTravelInfo, updateUI, getCity, handleSearch };
+export { runTravelInfo, getCity, handleSearch };
