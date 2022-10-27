@@ -1,10 +1,10 @@
 form {
   background-color: #02061277;
   border-radius: 2rem;
-
+  display: flex;
+  flex-direction: row;
   padding: 3rem;
   box-shadow: 24px 18px 9px 5px rgba(0, 0, 0, 0.3);
-  height: 21rem;
   width: auto;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
@@ -35,6 +35,12 @@ input#button {
   background-color: var(--primary-color-white);
   color: #d90416;
   padding: 0.6rem;
+  #button:hover {
+    -webkit-transition: all 0.4s 0s ease;
+    -moz-transition: all 0.4s 0s ease;
+    -o-transition: all 0.4s 0s ease;
+    transition: all 0.4s 0s ease;
+  }
 }
 .travel_input {
   padding: 1rem;
