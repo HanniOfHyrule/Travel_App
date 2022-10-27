@@ -1,9 +1,8 @@
-# Evaluate A News Article with Natural Language Processing
+# Travel App
 
-This is the 4th project from the [Udacity](Udacity.com) Web Developer Nanodegree program.
+This is the 5th and the Capstone project from the [Udacity](Udacity.com) Web Developer Nanodegree program.
 
-This project allows to analyze the user's article using NLP.
-the user enters the URL of any blog or newsletter article and gets a response from the meaningcloud API API with the analyzed values.
+City trips and vacations can be planned with the Travel App. After entering the location and the arrival and departure date, current data on the weather and how many days are left until the trip are displayed.
 
 ## Build tools
 
@@ -14,16 +13,17 @@ the user enters the URL of any blog or newsletter article and gets a response fr
 - Node
 - Express
 - Webpack
-- meaningcloud API
+- [geoname API](https://www.geonames.org/export/)
+- [weatherbit API](https://www.weatherbit.io/)
+- [pixabay API](https://pixabay.com/)
 - Workbox
 
 ## Installation
 
-Check if node and npm/yarn are installed.
+Check if node and npm are installed.
 
 `npm -v`
 `node -v`
-`yarn -v`
 
 Move to the project folder
 
@@ -33,10 +33,9 @@ Clone the repo
 
 `git clone <reponame>`
 
-Install with npm or yarn
+Install with npm
 
 `npm install`
-`yarn install`
 
 Install loaders and plugins
 
@@ -49,7 +48,7 @@ Choose the installation for your development mode
 `npm i -D mini-css-extract-plugin`
 `npm i -D optimize-css-assets-webpack-plugin terser-webpack-plugin`
 
-Go to the [meaningcloudAPI](meaningcloud.com) and get your personal API Key.
+Go to the [geoname API](https://www.geonames.org/export/), [weatherbit API](https://www.weatherbit.io/) and [pixabay API](https://pixabay.com/) and get your personal API Key.
 
 Configurate your environment files and using dotenv
 
@@ -69,7 +68,3 @@ after that you can start it
 `npm start`
 
 Open your browser at http://localhost:8080
-
-## And this is what it looks like:
-
-![The page](./src/client/assets/images/Article_analysis_with_NLP.png)
