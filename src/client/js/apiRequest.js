@@ -1,11 +1,7 @@
-const geonamesURL = "http://api.geonames.org/";
-const geonamesKey = "hanni";
-const geonamesQuery = "searchJSON?formatted=true&q=";
-
-const weatherbitURL = "http://api.weatherbit.io/v2.0/forecast/daily";
-const weatherbitKey = process.env.API_WEATHER_KEY;
-
+//API request Weather
 async function getWeatherbitForecast(latitude, longitude) {
+  const weatherbitURL = "http://api.weatherbit.io/v2.0/forecast/daily";
+  const weatherbitKey = process.env.API_WEATHER_KEY;
   const endpoint =
     weatherbitURL +
     "?lat=" +
@@ -19,17 +15,24 @@ async function getWeatherbitForecast(latitude, longitude) {
     const response = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ endpoint: endpoint }),
+      body: { endpoint: endpoint },
     });
     if (response.ok) {
-      return await response.json();
+      const jsonResponse = await response.json();
+      const temp = jsonResponse.data[0].app_max_temp;
+      const clouds = jsonResponse.data[0].clouds;
+      return temp, clouds;
     }
   } catch (error) {
-    console.error(error);
+    console.error(error, "There is something wrong with the weather request");
   }
 }
 
+//API request Location and lat, lon incl. countryCode
 async function geoNameLocation(location) {
+  const geonamesURL = "http://api.geonames.org/";
+  const geonamesKey = "hanni";
+  const geonamesQuery = "searchJSON?formatted=true&q=";
   const endpoint =
     geonamesURL +
     geonamesQuery +
@@ -51,7 +54,7 @@ async function geoNameLocation(location) {
     console.log(error);
   }
 }
-
+//API request Picture of the Location
 async function getPixabayImage(city) {
   const pixabayURL = "https://pixabay.com/api/?key=";
   const pixabayKey = process.env.API_PIXA_KEY;
@@ -62,7 +65,7 @@ async function getPixabayImage(city) {
     const response = await fetch(endpoint);
     if (response.ok) {
       let jsonResponse = await response.json();
-      return jsonResponse.hits[0].webformatURL;
+      return jsonResponse.hits[0].largeImageURL;
     }
   } catch (error) {
     console.error(error);

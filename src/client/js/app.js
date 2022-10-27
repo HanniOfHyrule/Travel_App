@@ -29,23 +29,35 @@ function getCity() {
 }
 //TODO:Fehlerbehandlung Try/catch?
 const handleSearch = async (document) => {
-  trip.city = getCity(trip);
-  trip.start = getTripStart();
-  trip.end = getTripEnd();
+  try {
+    trip.city = getCity(trip);
+    trip.start = getTripStart();
+    trip.end = getTripEnd();
+  } catch (error) {
+    console.error(
+      error,
+      alert("There is something wrong with the entered Trip data.")
+    );
+  }
+  try {
+    const getLocation = await geoNameLocation(trip.city);
+    trip.latitude = getLocation.latitude;
+    trip.longitude = getLocation.longitude;
+    trip.countryCode = getLocation.countryCode;
 
-  const getLocation = await geoNameLocation(trip.city);
-
-  trip.latitude = getLocation.latitude;
-  trip.longitude = getLocation.longitude;
-  trip.countryCode = getLocation.countryCode;
-
-  trip.weatherForecast = await getWeatherbitForecast(
-    getLocation.latitude,
-    getLocation.longitude
-  );
-
-  trip.imageURL = await getPixabayImage(trip.city);
-
+    trip.temp = await getWeatherbitForecast(
+      getLocation.latitude,
+      getLocation.longitude
+    );
+    trip.clouds = await getWeatherbitForecast(getLocation.clouds);
+  } catch (error) {
+    console.error(error, "There is no current or forecast weather here.");
+  }
+  try {
+    trip.imageURL = await getPixabayImage(trip.city);
+  } catch (error) {
+    console.error(error, "Sorry, we don't have a photo for you!");
+  }
   updateUI(trip, location);
 };
 
@@ -56,6 +68,7 @@ function updateUI(trip) {
   function createElements(trip) {
     const newDiv = document.createElement("div");
     newDiv.classList.add("entryHolder");
+
     newDiv.innerHTML = `
     <img class="image" src="${
       trip.imageURL
@@ -67,12 +80,8 @@ function updateUI(trip) {
       trip.start,
       trip.end
     )} days until the start of your trip!</p>
-    <p class="weather">Forecast Weather: ${
-      trip.weatherForecast.data[0].app_max_temp
-    }</p>
-    <p> Average total cloud coverage:  ${
-      trip.weatherForecast.data[0].clouds
-    } % </p>
+    <p class="weather">Forecast Weather: ${trip.temp}°C</p>
+    <p> Average total cloud coverage:  ${trip.clouds} % </p>
     `;
 
     allRecentPosts.appendChild(newDiv);

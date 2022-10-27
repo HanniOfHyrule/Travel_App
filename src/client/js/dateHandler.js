@@ -19,3 +19,5 @@ const dayCounter = (start, end) => {
 };
 
 export { getTripStart, getTripEnd, dayCounter };
+
+//TODO: its not working! Check again! still -7days remaining
