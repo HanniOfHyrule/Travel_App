@@ -10,6 +10,7 @@ async function getWeatherbitForecast(latitude, longitude) {
     `${longitude}` +
     "&key=" +
     weatherbitKey;
+    console.log(endpoint)
 
   try {
     const response = await fetch(endpoint, {
@@ -18,10 +19,8 @@ async function getWeatherbitForecast(latitude, longitude) {
       body: { endpoint: endpoint },
     });
     if (response.ok) {
-      const jsonResponse = await response.json();
-      const temp = jsonResponse.data[0].app_max_temp;
-      const clouds = jsonResponse.data[0].clouds;
-      return temp, clouds;
+console.log(response)
+      return await response.json()
     }
   } catch (error) {
     console.error(error, "There is something wrong with the weather request");
@@ -65,7 +64,7 @@ async function getPixabayImage(city) {
     const response = await fetch(endpoint);
     if (response.ok) {
       let jsonResponse = await response.json();
-      return jsonResponse.hits[0].largeImageURL;
+      return jsonResponse.hits[0].webformatURL;
     }
   } catch (error) {
     console.error(error);
