@@ -18,11 +18,7 @@ async function getWeatherbitForecast(latitude, longitude) {
       body: { endpoint: endpoint },
     });
     if (response.ok) {
-      const jsonResponse = await response.json();
-      return JSON.stringify(
-        jsonResponse.data[0].app_max_temp,
-        jsonResponse.data[0].clouds
-      );
+      return await response.json();
     }
   } catch (error) {
     console.error(error, "There is something wrong with the Weather.");
@@ -61,12 +57,12 @@ async function getPixabayImage(city) {
   const pixabayKey = process.env.API_PIXA_KEY;
   const cityQuery = `&q=${city}&image_type=photo&pretty=true&category=places`;
   const endpoint = pixabayURL + pixabayKey + cityQuery;
-  console.log(endpoint);
   try {
     const response = await fetch(endpoint);
     if (response.ok) {
       let jsonResponse = await response.json();
-      return jsonResponse.hits[0].largeImageURL;
+      console.log(jsonResponse);
+      return jsonResponse.hits[0].webformatURL;
     }
   } catch (error) {
     console.error(error);

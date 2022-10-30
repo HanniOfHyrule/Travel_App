@@ -16,6 +16,9 @@ main {
   flex: 2;
   color: var(--primary-color-white);
 }
+img {
+  max-width: 10rem;
+}
 
 section {
   max-width: 800px;
