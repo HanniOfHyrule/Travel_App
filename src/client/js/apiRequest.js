@@ -19,12 +19,13 @@ async function getWeatherbitForecast(latitude, longitude) {
     });
     if (response.ok) {
       const jsonResponse = await response.json();
-      const temp = jsonResponse.data[0].app_max_temp;
-      const clouds = jsonResponse.data[0].clouds;
-      return temp, clouds;
+      return JSON.stringify(
+        jsonResponse.data[0].app_max_temp,
+        jsonResponse.data[0].clouds
+      );
     }
   } catch (error) {
-    console.error(error, "There is something wrong with the weather request");
+    console.error(error, "There is something wrong with the Weather.");
   }
 }
 
@@ -44,11 +45,11 @@ async function geoNameLocation(location) {
     const response = await fetch(endpoint);
     if (response.ok) {
       const jsonResponse = await response.json();
-      return {
+      return JSON.stringify({
         latitude: jsonResponse.geonames[0].lat,
         longitude: jsonResponse.geonames[0].lng,
         countryCode: jsonResponse.geonames[0].countryCode,
-      };
+      });
     }
   } catch (error) {
     console.log(error);
