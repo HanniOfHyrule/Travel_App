@@ -10,7 +10,6 @@ async function getWeatherbitForecast(latitude, longitude) {
     `${longitude}` +
     "&key=" +
     weatherbitKey;
-    console.log(endpoint)
 
   try {
     const response = await fetch(endpoint, {
@@ -19,7 +18,6 @@ async function getWeatherbitForecast(latitude, longitude) {
       body: { endpoint: endpoint },
     });
     if (response.ok) {
-console.log(response)
       return await response.json()
     }
   } catch (error) {
@@ -59,11 +57,11 @@ async function getPixabayImage(city) {
   const pixabayKey = process.env.API_PIXA_KEY;
   const cityQuery = `&q=${city}&image_type=photo&pretty=true&category=places`;
   const endpoint = pixabayURL + pixabayKey + cityQuery;
-  console.log(endpoint);
   try {
     const response = await fetch(endpoint);
     if (response.ok) {
       let jsonResponse = await response.json();
+      console.log(jsonResponse)
       return jsonResponse.hits[0].webformatURL;
     }
   } catch (error) {
