@@ -41,6 +41,7 @@ const handleSearch = async ( trip) => {
     );
   }
   try {
+    trip.city = getCity(trip)
     const getLocation = await geoNameLocation(trip.city);
     trip.latitude = getLocation.latitude;
     trip.longitude = getLocation.longitude;
@@ -81,8 +82,8 @@ function updateUI(trip) {
       trip.start,
       trip.end
     )} days until the start of your trip!</div>
-    <div class="weather">Forecast Weather: ${trip.temp.data[0].app_max_temp}</div>
-    <div> Clouds: ${trip.clouds.data[0].clouds} °C</div>
+    <div class="weather">Forecast Weather: ${trip.temp.data[0].app_max_temp}°C</div>
+    <div> Clouds: ${trip.clouds.data[0].clouds}%</div>
     `;
 
     allRecentPosts.appendChild(newDiv);
