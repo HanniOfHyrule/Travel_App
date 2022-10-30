@@ -12,7 +12,7 @@ const trip = {};
 function runTravelInfo(event) {
   event.preventDefault();
 
-  handleSearch(document)
+  handleSearch(trip)
     // .then((location) => postContent(location))
     .then((location) => updateUI(trip, location))
     .catch((reason) => alert(reason));
@@ -27,8 +27,9 @@ function getCity() {
     console.error("There is something wrong with the City input.");
   }
 }
+
 //TODO:Fehlerbehandlung Try/catch?
-const handleSearch = async (document) => {
+const handleSearch = async ( trip) => {
   try {
     trip.city = getCity(trip);
     trip.start = getTripStart();
@@ -40,6 +41,7 @@ const handleSearch = async (document) => {
     );
   }
   try {
+    trip.city = getCity(trip)
     const getLocation = await geoNameLocation(trip.city);
     trip.latitude = getLocation.latitude;
     trip.longitude = getLocation.longitude;
@@ -49,7 +51,8 @@ const handleSearch = async (document) => {
       getLocation.latitude,
       getLocation.longitude
     );
-    trip.clouds = await getWeatherbitForecast(getLocation.clouds);
+    trip.clouds = await getWeatherbitForecast(getLocation.latitude,
+      getLocation.longitude);
   } catch (error) {
     console.error(error, "There is no current or forecast weather here.");
   }
@@ -61,6 +64,7 @@ const handleSearch = async (document) => {
   updateUI(trip, location);
 };
 
+
 function updateUI(trip) {
   const allRecentPosts = document.getElementById("allRecentPosts");
   allRecentPosts.innerHTML = "";
@@ -70,18 +74,16 @@ function updateUI(trip) {
     newDiv.classList.add("entryHolder");
 
     newDiv.innerHTML = `
-    <img class="image" src="${
-      trip.imageURL
-    }" alt="Image of your Destination:" />
-    <p class="city">My City: ${trip.city}, ${trip.countryCode}</p>
-    <p class="arrivalDate"> Arrival Date: ${getTripStart(trip.start)}</p>
-    <p class="departureDate"> Departure Date: ${getTripEnd(trip.end)}</p>
-    <p class="counter"> ${dayCounter(
+    <div class="image" src="${trip.imageURL}">Image of your Destination: </div>
+    <div class="city">My City: ${trip.city}, ${trip.countryCode}</div>
+    <div class="arrivalDate"> Arrival Date: ${getTripStart(trip.start)}</div>
+    <div class="departureDate"> Departure Date: ${getTripEnd(trip.end)}</div>
+    <div class="counter"> ${dayCounter(
       trip.start,
       trip.end
-    )} days until the start of your trip!</p>
-    <p class="weather">Forecast Weather: ${trip.temp}°C</p>
-    <p> Average total cloud coverage:  ${trip.clouds} % </p>
+    )} days until the start of your trip!</div>
+    <div class="weather">Forecast Weather: ${trip.temp.data[0].app_max_temp}°C</div>
+    <div> Clouds: ${trip.clouds.data[0].clouds}%</div>
     `;
 
     allRecentPosts.appendChild(newDiv);
