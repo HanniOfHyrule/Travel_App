@@ -16,11 +16,12 @@ main {
   flex: 2;
   color: var(--primary-color-white);
 }
-img {
-  opacity: 0.4;
-}
 
 section {
   max-width: 800px;
   margin: 50px auto;
+}
+
+img {
+  max-width: 10rem;
 }
