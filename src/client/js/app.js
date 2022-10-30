@@ -27,8 +27,8 @@ function getCity() {
     console.error("There is something wrong with the City input.");
   }
 }
-//TODO:Fehlerbehandlung Try/catch?
-const handleSearch = async (document) => {
+
+const handleSearch = async (trip) => {
   try {
     trip.city = getCity(trip);
     trip.start = getTripStart();
@@ -49,7 +49,10 @@ const handleSearch = async (document) => {
       getLocation.latitude,
       getLocation.longitude
     );
-    trip.clouds = await getWeatherbitForecast(getLocation.clouds);
+    trip.clouds = await getWeatherbitForecast(
+      getLocation.latitude,
+      getLocation.longitude
+    );
   } catch (error) {
     console.error(error, "There is no current or forecast weather here.");
   }
