@@ -5,17 +5,12 @@ import {
 } from "./apiRequest";
 import { getTripStart, getTripEnd, dayCounter } from "./dateHandler";
 
-//TODO: use here .addEventlistener() our event listeners can’t go there. Where can we put them? To call that exported function?
-
-const trip = {};
-
 function runTravelInfo(event) {
   event.preventDefault();
 
-  handleSearch(trip)
-    // .then((location) => postContent(location))
-    .then((location) => updateUI(trip, location))
-    .catch((reason) => alert(reason));
+  handleSearch()
+    .then((trip) => updateUI(trip))
+    .catch((reason) => console.error(reason));
   return false;
 }
 
@@ -27,103 +22,70 @@ function getCity() {
     console.error("There is something wrong with the City input.");
   }
 }
+const trip = {
+  city: null,
+  start: null,
+  end: null,
+  latitude: null,
+  longitude: null,
+  countryCode: null,
+  temp: null,
+  clouds: null,
+  imageURL: null,
+};
 
-const handleSearch = async (trip) => {
-  try {
-    trip.city = getCity(trip);
+const handleSearch = async () => {
+  return new Promise(async (resolve) => {
+    trip.city = getCity();
     trip.start = getTripStart();
     trip.end = getTripEnd();
-  } catch (error) {
-    console.error(
-      error,
-      alert("There is something wrong with the entered Trip data.")
-    );
-  }
-  try {
-    trip.city = getCity(trip);
+
     const getLocation = await geoNameLocation(trip.city);
     trip.latitude = getLocation.latitude;
     trip.longitude = getLocation.longitude;
     trip.countryCode = getLocation.countryCode;
 
-    trip.temp = await getWeatherbitForecast(
-      getLocation.latitude,
-      getLocation.longitude
+    const { temp, clouds } = await getWeatherbitForecast(
+      trip.latitude,
+      trip.longitude
     );
-    trip.clouds = await getWeatherbitForecast(
-      getLocation.latitude,
-      getLocation.longitude
-    );
-  } catch (error) {
-    console.error(error, "There is no current or forecast weather here.");
-  }
-  try {
+    trip.temp = temp;
+    trip.clouds = clouds;
+
     trip.imageURL = await getPixabayImage(trip.city);
-  } catch (error) {
-    console.error(error, "Sorry, we don't have a photo for you!");
-  }
-  updateUI(trip, location);
+    console.log(trip);
+    resolve(trip);
+  });
 };
 
 function updateUI(trip) {
   const allRecentPosts = document.getElementById("allRecentPosts");
   allRecentPosts.innerHTML = "";
 
-  function createElements(trip) {
-    const newDiv = document.createElement("div");
-    newDiv.classList.add("entryHolder");
+  const newDiv = document.createElement("div");
+  newDiv.classList.add("entryHolder");
+  console.log(trip);
 
-    newDiv.innerHTML = `
-    <div class="image" src="${trip.imageURL}">Image of your Destination: </div>
+  newDiv.innerHTML = `
+    <div class="image_container">
+    <img class="image" src="${
+      trip.imageURL
+    }" alt="Image of your Destination"></img></div>
+    <div class ="content_container">
     <div class="city">My City: ${trip.city}, ${trip.countryCode}</div>
     <div class="arrivalDate"> Arrival Date: ${getTripStart(trip.start)}</div>
     <div class="departureDate"> Departure Date: ${getTripEnd(trip.end)}</div>
-    <div class="counter"> ${dayCounter(
+    <div class="counter">Your trip is ${dayCounter(
       trip.start,
       trip.end
-    )} days until the start of your trip!</div>
-    <div class="weather">Forecast Weather: ${
-      trip.temp.data[0].app_max_temp
-    }°C</div>
-    <div> Clouds: ${trip.clouds.data[0].clouds}%</div>
+    )} days long!</div>
+    <div class="weather">Forecast Weather: ${trip.temp}°C</div>
+    <div> Clouds: ${trip.clouds}%</div>
+    </div>
     `;
 
-    allRecentPosts.appendChild(newDiv);
-  }
-  return createElements(trip, location);
+  allRecentPosts.appendChild(newDiv);
 }
-
-// const handleSave = async (e) => {
-//   e.preventDefault();
-
-//   try {
-//     const response = await fetch("https://localhost:8080/save", {
-//       method: "POST",
-//       credentials: "same-origin",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify(entries),
-//     });
-//     if (response.ok) {
-//       const jsonResp = await response.json();
-//       updateUI(jsonResp);
-//       return jsonResp;
-//     }
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-
-// async function postAndFetch() {
-//   await geoNameLocation(location).then((location) => {
-//     postEntry("/", {
-//       arrivalDate: arrivalDate.value,
-//       departureDate: departureDate.value,
-//       city: location.value,
-//     }).then((entries) => {
-//       updateUI(entries);
-//     }, clearInput());
-//   });
-// }
 
 document.getElementById("button").addEventListener("click", handleSearch);
 
