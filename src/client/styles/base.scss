@@ -1,5 +1,6 @@
 :root {
   --primary-color-white: white;
+  --primary-color-dark: black;
 }
 
 body {
@@ -17,7 +18,7 @@ main {
   color: var(--primary-color-white);
 }
 img {
-  max-width: 10rem;
+  max-width: 19rem;
 }
 
 section {
@@ -25,6 +26,16 @@ section {
   margin: 50px auto;
 }
 
-img {
-  max-width: 10rem;
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: rgba(240, 248, 255, 0.562);
+  color: var(--primary-color-dark);
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
 }

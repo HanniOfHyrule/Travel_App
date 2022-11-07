@@ -1,24 +1,15 @@
 form {
-  background-color: #02061277;
-  border-radius: 2rem;
   display: flex;
   flex-direction: row;
   padding: 3rem;
-  box-shadow: 24px 18px 9px 5px rgba(0, 0, 0, 0.3);
   width: auto;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
 }
-
-input {
+.input {
   padding: 11px 20px;
   width: 100%;
-  line-height: 1rem;
   margin: 20px 0;
-}
-input#url {
-  width: 100%;
-  padding: 12px 20px;
   box-sizing: border-box;
   border: transparent;
   border-radius: 4px;
@@ -26,22 +17,28 @@ input#url {
   resize: none;
   word-break: break-word;
 }
-input#button {
+.button {
   border: none;
-  border-radius: 2rem;
+  border-radius: 1rem;
   width: 20%;
+  height: max-content;
   align-items: baseline;
   text-align: center;
-  background-color: var(--primary-color-white);
-  color: #d90416;
-  padding: 0.6rem;
-  #button:hover {
+  background-color: #6164d4;
+  color: var(--primary-color-white);
+  padding: 11px 20px;
+  margin: 20px 0;
+  &:hover {
     -webkit-transition: all 0.4s 0s ease;
     -moz-transition: all 0.4s 0s ease;
     -o-transition: all 0.4s 0s ease;
     transition: all 0.4s 0s ease;
+    font-size: 1.05rem;
+    background-color: #040642;
   }
 }
+
 .travel_input {
   padding: 1rem;
+  gap: 0.2rem;
 }
