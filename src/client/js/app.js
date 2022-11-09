@@ -3,7 +3,12 @@ import {
   getWeatherbitForecast,
   getPixabayImage,
 } from "./apiRequest";
-import { getTripStart, getTripEnd, dayCounter } from "./dateHandler";
+import {
+  getTripStart,
+  getTripEnd,
+  dayCounter,
+  tripStartCounter,
+} from "./dateHandler";
 
 function runTravelInfo(event) {
   event.preventDefault();
@@ -53,7 +58,7 @@ const handleSearch = async () => {
     trip.clouds = clouds;
 
     trip.imageURL = await getPixabayImage(trip.city);
-    console.log(trip);
+
     resolve(trip);
   });
 };
@@ -64,9 +69,9 @@ function updateUI(trip) {
 
   const newDiv = document.createElement("div");
   newDiv.classList.add("entryHolder");
-  console.log(trip);
 
   newDiv.innerHTML = `
+  <div class="container">
     <div class="image_container">
     <img class="image" src="${
       trip.imageURL
@@ -80,7 +85,9 @@ function updateUI(trip) {
       trip.end
     )} days long!</div>
     <div class="weather">Forecast Weather: ${trip.temp}°C</div>
-    <div> Clouds: ${trip.clouds}%</div>
+    <div>Clouds: ${trip.clouds}%</div>
+    <div>Your trip starts in ${tripStartCounter(trip.start)} days!</div>
+    </div>
     </div>
     `;
 

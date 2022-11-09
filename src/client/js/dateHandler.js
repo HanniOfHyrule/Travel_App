@@ -11,13 +11,22 @@ const dayCounter = (start, end) => {
   const tripStart = Date.parse(start);
   const tripEnd = Date.parse(end);
 
-  const countdown = tripStart - tripEnd;
+  const countdown = tripEnd - tripStart;
 
-  const remainingDays = Math.ceil(countdown / 86400000);
+  const remainingDays = Math.ceil(countdown / (1000 * 60 * 60 * 24));
 
   return remainingDays;
 };
 
-export { getTripStart, getTripEnd, dayCounter };
+const tripStartCounter = (start) => {
+  const today = new Date();
+  const tripStart = Date.parse(start);
 
-//TODO: its not working! Check again! still -7days remaining
+  const counter = today - tripStart;
+
+  const remainingDays = Math.ceil(counter / (1000 * 60 * 60 * 24));
+
+  return remainingDays;
+};
+
+export { getTripStart, getTripEnd, dayCounter, tripStartCounter };
