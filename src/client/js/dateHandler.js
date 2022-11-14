@@ -1,12 +1,14 @@
-const getTripStart = () => {
-  const date = document.getElementById("arrival-date").value.split("-");
-  return date.join("/");
-};
-const getTripEnd = () => {
-  const date = document.getElementById("departure_date").value.split("-");
-  return date.join("/");
+//geth the arrival date from the input
+const getTravelStart = (document) => {
+  return new Date(document.getElementById("arrival_date").value);
 };
 
+//get the departure date from the input
+const getTravelEnd = (document) => {
+  return new Date(document.getElementById("departure_date").value);
+};
+
+//counts the days of the duration of the journey
 const dayCounter = (start, end) => {
   const tripStart = Date.parse(start);
   const tripEnd = Date.parse(end);
@@ -18,15 +20,16 @@ const dayCounter = (start, end) => {
   return remainingDays;
 };
 
-const tripStartCounter = (start) => {
+// counts the days until the trip begins
+const travelStartCounter = (start) => {
   const today = new Date();
   const tripStart = Date.parse(start);
 
-  const counter = today - tripStart;
+  const counter = tripStart - today;
 
   const remainingDays = Math.ceil(counter / (1000 * 60 * 60 * 24));
 
   return remainingDays;
 };
 
-export { getTripStart, getTripEnd, dayCounter, tripStartCounter };
+export { getTravelStart, getTravelEnd, dayCounter, travelStartCounter };
