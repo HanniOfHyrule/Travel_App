@@ -34,7 +34,7 @@ const handleSearch = async (document) => {
 
     const response = await fetch(`/travel/${city}/${travelStart}/${travelEnd}`);
     const body = await response.json();
-
+    console.log(body);
     resolve(body);
   });
 };
