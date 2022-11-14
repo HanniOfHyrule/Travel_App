@@ -28,13 +28,14 @@ exports.getWeatherbitForecast = async function (
     });
 
     const body = await response.json();
-
-    //here i return only the data i need
-    const filtered = body.data.filter((day) => {
+    //filter the date to show the weather on this date
+    let filtered = body.data.filter((day) => {
       return new Date(day.datetime) >= start && new Date(day.datetime) <= end;
     });
 
-    // TODO: what if there is no values in filtered?
+    if (filtered.length == 0) {
+      filtered = body.data;
+    }
 
     const tempStart = filtered[0].temp;
     const tempEnd = filtered[filtered.length - 1].temp;
@@ -43,8 +44,6 @@ exports.getWeatherbitForecast = async function (
       temp: [tempStart, tempEnd].sort(),
       clouds: [filtered[0].clouds, filtered[filtered.length - 1].clouds],
     };
-
-    // return await response.json();
   } catch (error) {
     console.error(error, "There is something wrong with the Weather.");
   }
