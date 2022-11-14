@@ -31,7 +31,8 @@ app.get("/travel/:city/:start/:end", async function (req, res) {
   const weather = await getWeatherbitForecast(
     location.latitude,
     location.longitude,
-    end
+    new Date(req.params.start),
+    new Date(req.params.end)
   );
   const pictureUrl = await getPixabayImage(req.params.city);
 
