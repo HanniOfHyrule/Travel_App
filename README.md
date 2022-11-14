@@ -2,7 +2,7 @@
 
 This is the 5th and the Capstone project from the [Udacity](Udacity.com) Web Developer Nanodegree program.
 
-City trips and vacations can be planned with the Travel App. After entering the location and the arrival and departure date, current data on the weather and how many days are left until the trip are displayed.
+City trips and vacations can be planned with the Travel App. After entering the location and the arrival and departure date, current data on the weather, how many days are left until the trip are displayed and a nice picture of your destination.
 
 ## Build tools
 
@@ -20,7 +20,7 @@ City trips and vacations can be planned with the Travel App. After entering the 
 
 ## How it look like
 
-[picture of the Travel planner](./src/client/media/images/Screenshot%202022-11-14%20145701.png)
+![picture of the Travel planner](./src/client/media/images/Screenshot%202022-11-14%20145701.png)
 
 ## Installation
 
