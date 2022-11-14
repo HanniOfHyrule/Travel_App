@@ -3,7 +3,12 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 //API request Weather
-exports.getWeatherbitForecast = async function (latitude, longitude, end) {
+exports.getWeatherbitForecast = async function (
+  latitude,
+  longitude,
+  start,
+  end
+) {
   const weatherbitURL = "http://api.weatherbit.io/v2.0/forecast/daily";
   const weatherbitKey = process.env.API_WEATHER_KEY;
   const endpoint =
@@ -21,71 +26,25 @@ exports.getWeatherbitForecast = async function (latitude, longitude, end) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ endpoint: endpoint }),
     });
-    // const response = {
-    //   data: [
-    //     {
-    //       valid_date: "2017-04-01",
-    //       ts: 1503954000,
-    //       datetime: "2017-04-01",
-    //       wind_gust_spd: 16.7,
-    //       wind_spd: 6.4,
-    //       wind_dir: 45,
-    //       wind_cdir: "NE",
-    //       wind_cdir_full: "northeast",
-    //       temp: 25,
-    //       max_temp: 30,
-    //       min_temp: 26,
-    //       high_temp: 30,
-    //       low_temp: 24.5,
-    //       app_max_temp: 30.64,
-    //       app_min_temp: 23.64,
-    //       pop: 0,
-    //       precip: 0,
-    //       snow: 0,
-    //       snow_depth: 0,
-    //       slp: 1017,
-    //       pres: 1003.5,
-    //       dewpt: 17.8,
-    //       rh: 64.3,
-    //       weather: {
-    //         icon: "c04d",
-    //         code: "804",
-    //         description: "Overcast clouds",
-    //       },
-    //       clouds_low: 25,
-    //       clouds_mid: 100,
-    //       clouds_hi: 50,
-    //       clouds: 100,
-    //       vis: 10,
-    //       max_dhi: 178,
-    //       uv: 2,
-    //       moon_phase: 0.99,
-    //       moon_phase_lunation: 0.48,
-    //       moonrise_ts: 1530341260,
-    //       moonset_ts: 1530351260,
-    //       sunrise_ts: 1530321260,
-    //       sunset_ts: 1530391260,
-    //     },
-    //   ],
-    //   city_name: "Raleigh",
-    //   lon: "-78.63861",
-    //   timezone: "America/New_York",
-    //   lat: "35.7721",
-    //   country_code: "US",
-    //   state_code: "NC",
-    // };
 
-    if (response) {
-      //here i return only the data i need
-      if (response.data.datetime >= end) {
-        return {
-          temp: response.data.temp,
-          clouds: response.data.clouds,
-        };
-      }
-      //TODO: echte API siehe oben = mach es genau so!
-      // return await response.json();
-    }
+    const body = await response.json();
+
+    //here i return only the data i need
+    const filtered = body.data.filter((day) => {
+      return new Date(day.datetime) >= start && new Date(day.datetime) <= end;
+    });
+
+    // TODO: what if there is no values in filtered?
+
+    const tempStart = filtered[0].temp;
+    const tempEnd = filtered[filtered.length - 1].temp;
+
+    return {
+      temp: [tempStart, tempEnd].sort(),
+      clouds: [filtered[0].clouds, filtered[filtered.length - 1].clouds],
+    };
+
+    // return await response.json();
   } catch (error) {
     console.error(error, "There is something wrong with the Weather.");
   }
