@@ -18,6 +18,10 @@ City trips and vacations can be planned with the Travel App. After entering the 
 - [pixabay API](https://pixabay.com/)
 - Workbox
 
+## How it look like
+
+[picture of the Travel planner](./src/client/media/images/Screenshot%202022-11-14%20145701.png)
+
 ## Installation
 
 Check if node and npm are installed.
