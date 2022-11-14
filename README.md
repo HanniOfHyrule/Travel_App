@@ -1,4 +1,4 @@
-# Travel App :clouds:
+# Travel App :cloud:
 
 This is the 5th and the Capstone project from the [Udacity](Udacity.com) Web Developer Nanodegree program.
 
