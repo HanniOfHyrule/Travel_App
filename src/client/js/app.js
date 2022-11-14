@@ -31,10 +31,8 @@ const handleSearch = async (document) => {
     const city = getCity(document);
     const travelStart = getTravelStart(document);
     const travelEnd = getTravelEnd(document);
-
     const response = await fetch(`/travel/${city}/${travelStart}/${travelEnd}`);
     const body = await response.json();
-    console.log(body);
     resolve(body);
   });
 };
@@ -74,8 +72,11 @@ async function updateUI(travelMetrics, document) {
   allRecentPosts.appendChild(newDiv);
 }
 
-document.getElementById("button").addEventListener("click", () => {
-  handleSearch(document);
+document.addEventListener("DOMContentLoaded", function () {
+  let buttonClick = document.getElementById("button");
+  buttonClick.addEventListener("click", function (e) {
+    handleSearch(document);
+  });
 });
 
 export { planningTravel, getCity, handleSearch, updateUI };
