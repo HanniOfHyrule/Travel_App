@@ -1,10 +1,10 @@
-# Travel App
+# Travel App :clouds:
 
 This is the 5th and the Capstone project from the [Udacity](Udacity.com) Web Developer Nanodegree program.
 
 City trips and vacations can be planned with the Travel App. After entering the location and the arrival and departure date, current data on the weather, how many days are left until the trip are displayed and a nice picture of your destination.
 
-## Build tools
+## Build tools :hammer:
 
 - HTML
 - SCSS
@@ -18,11 +18,11 @@ City trips and vacations can be planned with the Travel App. After entering the 
 - [pixabay API](https://pixabay.com/)
 - Workbox
 
-## How it look like
+## How it look like :eyeglasses:
 
 ![picture of the Travel planner](./src/client/media/images/Screenshot%202022-11-14%20145701.png)
 
-## Installation
+## Installation :on:
 
 Check if node and npm are installed.
 
