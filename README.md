@@ -2,7 +2,7 @@
 
 This is the 5th and the Capstone project from the [Udacity](Udacity.com) Web Developer Nanodegree program.
 
-City trips and vacations can be planned with the Travel App. After entering the location and the arrival and departure date, current data on the weather, how many days are left until the trip are displayed and a nice picture of your destination.
+City trips and vacations can be planned with the Travel App. After entering the location and the arrival and departure date, current data on the weather, how many days are left until the trip are displayed and a nice picture of your destination. This project was built without using modern frontend frameworks, just vanilla JavaScript. Nevertheless, modern tools were used such as Webpack, Node.js and Express to initialize my own backend. Using three APIs, the weather data, the location and an image of the specified location were fetched and displayed in the UI.
 
 ## Build tools :hammer:
 
