@@ -2,14 +2,20 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-//const cors = require("cors");
-const fetch = require("node-fetch");
+const cors = require("cors");
+const {
+  geoNameLocation,
+  getPixabayImage,
+  getWeatherbitForecast,
+} = require("./apiRequest");
+
+const port = 8080;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Cors for cross origin allowance
-//app.use(cors());
+app.use(cors());
 
 // Initialize the main project folder
 app.use(express.static("./dist"));
@@ -19,55 +25,29 @@ app.use((req, res, next) => {
   next();
 });
 
-// designates what port the app will listen to for incoming requests
-app.listen(8080, function () {
-  console.log("Example app listening on port 8080!");
-});
-
-// Array that hold the Trips
-const trips = [];
-
 //Routes
+app.get("/travel/:city/:start/:end", async function (req, res) {
+  const location = await geoNameLocation(req.params.city);
+  const weather = await getWeatherbitForecast(
+    location.latitude,
+    location.longitude,
+    end
+  );
+  const pictureUrl = await getPixabayImage(req.params.city);
 
-// app.get("/", (req, res) => {
-//   res.status(200).send("./dist/index.html");
-// });
-// app.get("/jokes/random", (req, res) => {
-//   request(
-//     { url: "https://joke-api-strict-cors.appspot.com/jokes/random" },
-//     (error, response, body) => {
-//       if (error || response.statusCode !== 200) {
-//         return res.status(500).json({ type: "error", message: err.message });
-//       }
-
-//       res.json(JSON.parse(body));
-//     }
-//   );
-// });
-
-app.post("/save", (req, res) => {
-  if (req.body !== " ") {
-    const trip = req.body.trip;
-    trips.push(trip);
-    res.send(trips);
-  } else {
-    res.status(400).json("Bad request");
-  }
+  res.send({
+    city: req.params.city,
+    start: req.params.start,
+    end: req.params.end,
+    weather,
+    pictureUrl,
+    location,
+  });
 });
 
-// app.post("/forecast", async (req, res) => {
-//   if (req.body.endpoint !== " ") {
-//     const endpoint = req.body.endpoint;
-//     try {
-//       const response = await fetch(endpoint);
-//       if (response.ok) {
-//         const jsonResponse = await response.json();
-//         res.status(200).send(jsonResponse);
-//       }
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   } else {
-//     res.status(400).json("Bad request");
-//   }
-// });
+// designates what port the app will listen to for incoming requests
+if (process.env.NODE_ENV !== "test") {
+  app.listen(port, () => {
+    console.log(`Travel app listening on port ${port}`);
+  });
+}

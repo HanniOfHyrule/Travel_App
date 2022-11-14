@@ -1,25 +1,22 @@
 import {
-  geoNameLocation,
-  getWeatherbitForecast,
-  getPixabayImage,
-} from "./apiRequest";
-import {
-  getTripStart,
-  getTripEnd,
+  getTravelStart,
+  getTravelEnd,
   dayCounter,
-  tripStartCounter,
+  travelStartCounter,
 } from "./dateHandler";
 
-function runTravelInfo(event) {
+function planningTravel(event) {
   event.preventDefault();
 
-  handleSearch()
-    .then((trip) => updateUI(trip))
+  handleSearch(document)
+    .then((travelMetrics) => updateUI(travelMetrics, document))
     .catch((reason) => console.error(reason));
+
   return false;
 }
 
-function getCity() {
+//get the city input
+function getCity(document) {
   if (document.getElementById("city").value != null) {
     const trip = document.getElementById("city").value;
     return trip;
@@ -27,66 +24,49 @@ function getCity() {
     console.error("There is something wrong with the City input.");
   }
 }
-const trip = {
-  city: null,
-  start: null,
-  end: null,
-  latitude: null,
-  longitude: null,
-  countryCode: null,
-  temp: null,
-  clouds: null,
-  imageURL: null,
-};
 
-const handleSearch = async () => {
+// handle the API requests and pass the data into travelMetrics
+const handleSearch = async (document) => {
   return new Promise(async (resolve) => {
-    trip.city = getCity();
-    trip.start = getTripStart();
-    trip.end = getTripEnd();
+    const city = getCity(document);
+    const travelStart = getTravelStart(document);
+    const travelEnd = getTravelEnd(document);
 
-    const getLocation = await geoNameLocation(trip.city);
-    trip.latitude = getLocation.latitude;
-    trip.longitude = getLocation.longitude;
-    trip.countryCode = getLocation.countryCode;
+    const response = await fetch(`/travel/${city}/${travelStart}/${travelEnd}`);
+    const body = await response.json();
 
-    const { temp, clouds } = await getWeatherbitForecast(
-      trip.latitude,
-      trip.longitude
-    );
-    trip.temp = temp;
-    trip.clouds = clouds;
-
-    trip.imageURL = await getPixabayImage(trip.city);
-
-    resolve(trip);
+    resolve(body);
   });
 };
 
-function updateUI(trip) {
-  const allRecentPosts = document.getElementById("allRecentPosts");
-  allRecentPosts.innerHTML = "";
-
+// update the UI
+async function updateUI(travelMetrics, document) {
   const newDiv = document.createElement("div");
+  const allRecentPosts = document.getElementById("allRecentPosts");
   newDiv.classList.add("entryHolder");
+
+  allRecentPosts.innerHTML = "";
 
   newDiv.innerHTML = `
   <div class="container">
     <div class="image_container">
-    <img class="image" src="${
-      trip.imageURL
-    }" alt="Image of your Destination"></img></div>
+    <img class="image" src="${travelMetrics.pictureUrl}" 
+    alt="Image of your Destination"></img></div>
     <div class ="content_container">
-    <div class="city">My City: ${trip.city}, ${trip.countryCode}</div>
-    <div class="arrivalDate"> Arrival Date: ${getTripStart(trip.start)}</div>
-    <div class="departureDate"> Departure Date: ${getTripEnd(trip.end)}</div>
+    <div class="city">My City: ${travelMetrics.city}, ${
+    travelMetrics.location.countryCode
+  }</div>
+    <div class="arrivalDate"> Arrival Date: ${travelMetrics.start}</div>
+    <div class="departureDate"> Departure Date: ${travelMetrics.end}</div>
     <div class="counter">Your trip is ${dayCounter(
-      trip.start,
-      trip.end
+      travelMetrics.start,
+      travelMetrics.end
     )} days long!</div>
-    <div class="weather">Forecast Weather: ${trip.temp}°C</div>
-    <div>Clouds: ${trip.clouds}%</div>
-    <div>Your trip starts in ${tripStartCounter(trip.start)} days!</div>
+    <div class="weather">Forecast Weather: ${travelMetrics.weather.temp}°C</div>
+    <div class="weatherClouds">Clouds: ${travelMetrics.weather.clouds}%</div>
+    <div class="travelStart">Your trip starts in ${travelStartCounter(
+      travelMetrics.start
+    )} days!</div>
     </div>
     </div>
     `;
@@ -94,6 +74,8 @@ function updateUI(trip) {
   allRecentPosts.appendChild(newDiv);
 }
 
-document.getElementById("button").addEventListener("click", handleSearch);
+document.getElementById("button").addEventListener("click", () => {
+  handleSearch(document);
+});
 
-export { runTravelInfo, getCity, handleSearch };
+export { planningTravel, getCity, handleSearch, updateUI };

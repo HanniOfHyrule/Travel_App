@@ -2,6 +2,8 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Travel App</title>
     <link
       rel="stylesheet"
@@ -23,18 +25,30 @@
 
     <main>
       <section>
-        <form class="travel_input onsubmit="return Client.runSentimentAnalysis(event)">
-          <input id="city" type="text" name="city" placeholder="City" required />
+        <form
+          class="travel_input"
+          onsubmit="return Client.planningTravel(event)"
+        >
           <input
-            id="arrival-date"
+            id="city"
+            type="text"
+            name="city"
+            class="input"
+            placeholder="City"
+            required
+          />
+          <input
+            id="arrival_date"
             type="date"
-            name="arrival-date"
-            placeholder="arrival-date"
+            class="input"
+            name="arrival_date"
+            placeholder="arrival_date"
             required
           />
           <input
             id="departure_date"
             type="date"
+            class="input"
             name="departure_date"
             placeholder="departure_date"
             required
@@ -42,23 +56,26 @@
           <input
             type="submit"
             id="button"
+            class="button"
             value="submit"
-            onclick="return Client.runTravelInfo(event)"
-            onsubmit="return Client.runTravelInfo(event)"
+            onclick="return Client.planningTravel(event)"
+            onsubmit="return Client.planningTravel(event)"
           />
         </form>
         <div id="allRecentPosts"></div>
       </section>
-    
-      
+
       <footer>
         <p class="footer">
-          Made by <a href="github.com/HanniOfHyrule">Hanni Liebler</a> with
-          <a href="Udacity.com">Udacity</a>!
+          Made by
+          <a href="https://github.com/HanniOfHyrule/Travel_App"
+            >Hanni Liebler</a
+          >
+          with <a href="https://Udacity.com">Udacity</a>
         </p>
       </footer>
     </main>
-<script>
+    <script>
       // Check that service workers are supported
       // if ("serviceWorker" in navigator) {
       //   //   Use the window load event to keep the page load performant
